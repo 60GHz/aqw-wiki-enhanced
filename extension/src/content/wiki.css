@@ -1,0 +1,447 @@
+/* AQW Wiki Enhanced - wiki theme layer (v0.1)
+   Tokens mirror design/tokens.css. Dark = Evil is the flagship. */
+
+html.aqwe {
+    --aqwe-surface-page: #EDEDEA;
+    --aqwe-surface: #FBFBFA;
+    --aqwe-raised: #FFFFFF;
+    --aqwe-sunken: #E3E3DF;
+    --aqwe-text: #26251F;
+    --aqwe-text-2: #55534A;
+    --aqwe-muted: #85817A;
+    --aqwe-accent: #9E1D24;
+    --aqwe-gold: #A97E2F;
+    --aqwe-gold-bright: #C9A254;
+    --aqwe-owned: #1F7A31;
+    --aqwe-owned-soft: rgba(31, 122, 49, 0.10);
+    --aqwe-bank: #9A6F1D;
+    --aqwe-bank-soft: rgba(154, 111, 29, 0.13);
+    --aqwe-quest: #7B2CBF;   /* time-gated quests: the Legend purple family, never the bank gold */
+    --aqwe-gift: #C0417E;    /* friendship hearts are pink in the game */
+    --aqwe-merge: #1F6E74;   /* its own teal - gray read as just more text */
+    --aqwe-border: rgba(38, 37, 31, 0.14);
+    --aqwe-shadow: 0 4px 12px rgba(38, 37, 31, 0.12), 0 16px 40px rgba(38, 37, 31, 0.18);
+}
+html.aqwe[data-aqwe-theme="evil"] {
+    --aqwe-surface-page: #1B1C21;
+    --aqwe-surface: #232429;
+    --aqwe-raised: #2A2B31;
+    --aqwe-sunken: #17181C;
+    --aqwe-text: #E9E5DC;
+    --aqwe-text-2: #B5AFA2;
+    --aqwe-muted: #837D71;
+    --aqwe-accent: #D8433B;
+    --aqwe-gold: #D4A853;
+    --aqwe-gold-bright: #E8C57A;
+    --aqwe-owned: #5FBF6E;
+    --aqwe-owned-soft: rgba(95, 191, 110, 0.14);
+    --aqwe-bank: #D4A853;
+    --aqwe-bank-soft: rgba(212, 168, 83, 0.16);
+    --aqwe-quest: #B98AE8;
+    --aqwe-gift: #E88BC0;
+    --aqwe-merge: #6FC3CB;
+    --aqwe-border: rgba(233, 229, 220, 0.12);
+    --aqwe-shadow: 0 4px 12px rgba(0, 0, 0, 0.40), 0 16px 40px rgba(0, 0, 0, 0.50);
+}
+
+/* ---------------- Evil: readable dark wiki core ---------------- */
+
+html.aqwe[data-aqwe-theme="evil"] {
+    /* the browser's own furniture follows the theme: scrollbars, form
+       controls and dropdowns render dark on every wiki page */
+    color-scheme: dark;
+}
+html.aqwe[data-aqwe-theme="evil"] body {
+    background-color: var(--aqwe-surface-page);
+    color: var(--aqwe-text);
+}
+html.aqwe[data-aqwe-theme="evil"] #main-content,
+html.aqwe[data-aqwe-theme="evil"] #container-wrap-wrap,
+html.aqwe[data-aqwe-theme="evil"] #content-wrap {
+    background-color: var(--aqwe-surface-page);
+}
+html.aqwe[data-aqwe-theme="evil"] #page-content,
+html.aqwe[data-aqwe-theme="evil"] #page-content p,
+html.aqwe[data-aqwe-theme="evil"] #page-content li,
+html.aqwe[data-aqwe-theme="evil"] #page-content td,
+html.aqwe[data-aqwe-theme="evil"] #main-content h1,
+html.aqwe[data-aqwe-theme="evil"] #main-content h2,
+html.aqwe[data-aqwe-theme="evil"] #main-content h3 {
+    color: var(--aqwe-text);
+    background-color: transparent;
+}
+html.aqwe[data-aqwe-theme="evil"] #page-title { color: var(--aqwe-accent); border-color: var(--aqwe-border); }
+html.aqwe[data-aqwe-theme="evil"] a { color: #E06A5E; background: transparent; }
+html.aqwe[data-aqwe-theme="evil"] a:hover { color: #F08074; }
+html.aqwe[data-aqwe-theme="evil"] #side-bar {
+    background: transparent;
+    border-right: 1px solid var(--aqwe-border);
+}
+html.aqwe[data-aqwe-theme="evil"] #side-bar a,
+html.aqwe[data-aqwe-theme="evil"] #side-bar p,
+html.aqwe[data-aqwe-theme="evil"] #side-bar h1,
+html.aqwe[data-aqwe-theme="evil"] #side-bar h2 { color: var(--aqwe-text-2); background: transparent; }
+html.aqwe[data-aqwe-theme="evil"] .yui-navset .yui-content { background-color: var(--aqwe-surface); }
+html.aqwe[data-aqwe-theme="evil"] .yui-navset .yui-nav a { background: var(--aqwe-sunken); color: var(--aqwe-text-2); }
+html.aqwe[data-aqwe-theme="evil"] .yui-navset .yui-nav .selected a { background: var(--aqwe-accent); color: #fff; }
+html.aqwe[data-aqwe-theme="evil"] table.wiki-content-table td,
+html.aqwe[data-aqwe-theme="evil"] table.wiki-content-table th {
+    background: var(--aqwe-surface);
+    border-color: var(--aqwe-border);
+    color: var(--aqwe-text);
+}
+html.aqwe[data-aqwe-theme="evil"] blockquote,
+html.aqwe[data-aqwe-theme="evil"] div.sexy-box,
+html.aqwe[data-aqwe-theme="evil"] .code {
+    background: var(--aqwe-surface);
+    border-color: var(--aqwe-border);
+    color: var(--aqwe-text);
+}
+html.aqwe[data-aqwe-theme="evil"] #footer { background: #141519; color: var(--aqwe-muted); }
+/* The homepage: its own module paints every section cell and news post
+   in salmon (#f2e0d4 cells, #f0d5ca post frames) - unreadable under
+   Evil's light text. They move onto ember-warmed darks mixed from our
+   own tokens, so the homepage keeps its warmth in Shadowfall: cells
+   and post bodies share one tone, post frames run one step warmer,
+   exactly the layering the wiki designed in pink. */
+html.aqwe[data-aqwe-theme="evil"] .info-cell { background-color: color-mix(in srgb, var(--aqwe-accent) 7%, var(--aqwe-surface)); }
+html.aqwe[data-aqwe-theme="evil"] .post { background-color: color-mix(in srgb, var(--aqwe-accent) 13%, var(--aqwe-raised)); }
+html.aqwe[data-aqwe-theme="evil"] .post-body { background-color: color-mix(in srgb, var(--aqwe-accent) 7%, var(--aqwe-surface)); color: var(--aqwe-text); }
+html.aqwe[data-aqwe-theme="evil"] .post .avatarhover img.small { background-color: color-mix(in srgb, var(--aqwe-accent) 9%, var(--aqwe-raised)) !important; }
+html.aqwe[data-aqwe-theme="evil"] #u-welcome hr { background-color: var(--aqwe-border); }
+/* The homepage buttons ARE anchors painted by background-color, and the
+   blanket Evil link rule (background: transparent) erased them - restate
+   their own design: solid reds work on dark as-is, the outline search
+   buttons swap their black ink for ours, socials keep their brand colors */
+html.aqwe[data-aqwe-theme="evil"] .release-buttons a,
+html.aqwe[data-aqwe-theme="evil"] .social-buttons a { background-color: var(--dark-red); color: #fff; }
+html.aqwe[data-aqwe-theme="evil"] .release-buttons a:hover,
+html.aqwe[data-aqwe-theme="evil"] .social-buttons a:hover { background-color: var(--darker-red); color: #fff; }
+html.aqwe[data-aqwe-theme="evil"] .search-buttons a { background-color: transparent; color: var(--aqwe-text); border: 2px solid var(--dark-red); }
+html.aqwe[data-aqwe-theme="evil"] .search-buttons a:hover { background-color: var(--darker-red); color: #fff; border-color: var(--darker-red); }
+html.aqwe[data-aqwe-theme="evil"] a.twitter-logo { background-color: var(--twitter-blue); }
+html.aqwe[data-aqwe-theme="evil"] a.twitter-logo:hover { background-color: var(--twitter-blue-hover); }
+html.aqwe[data-aqwe-theme="evil"] a.discord-logo { background-color: var(--discord-blurple); }
+html.aqwe[data-aqwe-theme="evil"] a.discord-logo:hover { background-color: var(--discord-blurple-hover); }
+html.aqwe[data-aqwe-theme="evil"] .category-list li a { background-color: #770c0c; color: #fff; }
+html.aqwe[data-aqwe-theme="evil"] .category-list li a:hover { background-color: #a82828; }
+/* the announcements list scrolls - it wears the popup's thin themed bar */
+html.aqwe[data-aqwe-theme="evil"] #u-post-list {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--aqwe-text-2) 45%, transparent) transparent;
+}
+html.aqwe[data-aqwe-theme="evil"] #u-post-list::-webkit-scrollbar { width: 8px; }
+html.aqwe[data-aqwe-theme="evil"] #u-post-list::-webkit-scrollbar-track { background: transparent; }
+html.aqwe[data-aqwe-theme="evil"] #u-post-list::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--aqwe-text-2) 45%, transparent); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+
+/* Nav tabs over the banner: readable in BOTH themes (WCAG AA) */
+html.aqwe #top-bar a {
+    color: #F0ECE4;
+    background: rgba(20, 21, 25, 0.85);
+    border-radius: 4px;
+}
+html.aqwe #top-bar ul li:hover a, html.aqwe #top-bar ul li.sfhover a {
+    background: rgba(20, 21, 25, 0.96);
+    color: #E8C57A;
+}
+html.aqwe #top-bar ul li ul { border-color: rgba(255,255,255,0.12); }
+
+/* ---------------- Ownership ---------------- */
+
+html.aqwe a.aqwe-owned, html.aqwe #page-title.aqwe-owned { color: var(--aqwe-owned) !important; }
+html.aqwe a.aqwe-bank, html.aqwe #page-title.aqwe-bank { color: var(--aqwe-bank) !important; }
+/* the pill centers its icon by construction: fixed 16px height, grid
+   centering - no more baseline drift sitting the bank 1px low */
+html.aqwe .aqwe-glyph {
+    display: inline-grid;
+    place-items: center;
+    height: 16px;
+    margin-left: 5px;
+    padding: 0 6px;
+    border-radius: 999px;
+    vertical-align: -1px;   /* measured to the shared midline of tick, name, chips and quantity */
+    background: var(--aqwe-owned-soft);
+    color: var(--aqwe-owned);
+    border: 1px solid currentColor;
+}
+html.aqwe .aqwe-glyph svg { width: 12px; height: 12px; display: block; }
+/* title-level icons: equal height, centered on the title's midline */
+html.aqwe #page-title .aqwe-glyph,
+html.aqwe #page-title .aqwe-goal-star {
+    display: inline-grid;
+    place-items: center;
+    height: 30px;
+    vertical-align: middle;
+    margin-top: -4px;
+}
+html.aqwe #page-title .aqwe-glyph { padding: 0 10px; }
+html.aqwe #page-title .aqwe-glyph svg { width: 18px; height: 18px; vertical-align: 0; }
+html.aqwe #page-title .aqwe-goal-star { font-size: 17px; line-height: 1; padding: 0 13px; }
+html.aqwe .aqwe-bank .aqwe-glyph { background: var(--aqwe-bank-soft); color: var(--aqwe-bank); }
+
+/* ---------------- Farm Goal star ---------------- */
+
+html.aqwe .aqwe-goal-star {
+    appearance: none;
+    margin-left: 10px;
+    padding: 1px 10px;
+    font-size: 0.62em;
+    vertical-align: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--aqwe-border);
+    background: var(--aqwe-raised);
+    color: var(--aqwe-muted);
+    cursor: pointer;
+}
+html.aqwe .aqwe-goal-star:hover { color: var(--aqwe-gold-bright); border-color: var(--aqwe-gold); }
+html.aqwe .aqwe-goal-star.set { color: var(--aqwe-gold-bright); background: rgba(212, 168, 83, 0.14); border-color: var(--aqwe-gold); }
+
+/* ---------------- Boost banner chip ---------------- */
+
+html.aqwe .aqwe-boost {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 2px 12px;
+    font-size: 0.55em;
+    font-weight: 700;
+    vertical-align: 6px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+}
+html.aqwe .aqwe-boost-xp { color: #8FB8BD; background: rgba(143, 184, 189, 0.13); border: 1px solid rgba(143, 184, 189, 0.4); }
+html.aqwe .aqwe-boost-class { color: #E06A5E; background: rgba(224, 106, 94, 0.13); border: 1px solid rgba(224, 106, 94, 0.4); }
+html.aqwe .aqwe-boost-rep { color: #58C978; background: rgba(88, 201, 120, 0.13); border: 1px solid rgba(88, 201, 120, 0.4); }
+html.aqwe .aqwe-boost-gold, html.aqwe .aqwe-boost-all { color: #D1AB3C; background: rgba(209, 171, 60, 0.13); border: 1px solid rgba(209, 171, 60, 0.4); }
+html.aqwe[data-aqwe-theme="good"] .aqwe-boost-xp { color: #272D2E; }
+html.aqwe[data-aqwe-theme="good"] .aqwe-boost-class { color: #660000; }
+html.aqwe[data-aqwe-theme="good"] .aqwe-boost-rep { color: #006600; }
+html.aqwe[data-aqwe-theme="good"] .aqwe-boost-gold { color: #8F6D14; }
+
+/* ---------------- How to Obtain recipe panel ---------------- */
+
+html.aqwe .aqwe-recipe {
+    margin: 10px 0;
+    max-width: 560px;
+    border: 1px solid var(--aqwe-border);
+    border-radius: 12px;
+    background: var(--aqwe-surface);
+    overflow: hidden;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    /* OUR rhythm, on every page: wikidot ships per-page line-height
+       modules (141% on most item pages, absent on others) and an
+       inherited line box made the same panel measure differently from
+       page to page - rows are 19px lines, source lines 16px, everywhere */
+    line-height: 19px;
+}
+html.aqwe .aqwe-recipe-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px;
+    background: var(--aqwe-sunken);
+    border-bottom: 1px solid var(--aqwe-border);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--aqwe-text);
+}
+html.aqwe .aqwe-meter { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; color: var(--aqwe-muted); }
+html.aqwe .aqwe-bar {
+    width: 110px; height: 6px;
+    border-radius: 999px;
+    background: var(--aqwe-surface-page);
+    border: 1px solid var(--aqwe-border);
+    overflow: hidden;
+    display: inline-block;
+}
+html.aqwe .aqwe-bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--aqwe-accent), var(--aqwe-gold)); border-radius: 999px; }
+html.aqwe .aqwe-recipe-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 14px;
+    font-size: 13px;
+    border-top: 1px solid var(--aqwe-border);
+}
+html.aqwe .aqwe-recipe-row:first-of-type { border-top: 0; }
+html.aqwe .aqwe-qty { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--aqwe-muted); }
+html.aqwe .aqwe-recipe-row.ok .aqwe-qty { color: var(--aqwe-owned); }
+html.aqwe .aqwe-recipe-row.part .aqwe-qty { color: var(--aqwe-gold); }
+html.aqwe .aqwe-raw-recipe { display: none; }
+/* Shop pages: the tab box hugs its table instead of spanning the whole
+   content column - on wide screens the empty right half read as a giant
+   hollow frame (wiki.js sets the class off the Shops breadcrumb) */
+html.aqwe.aqwe-shops .yui-navset .yui-content { width: fit-content; min-width: 320px; max-width: 100%; }
+
+/* ---------------- Hover preview ---------------- */
+
+html.aqwe .aqwe-hover { justify-content: center;
+    position: fixed;
+    z-index: 99999;
+    max-width: 640px;   /* wide art needs 620 + frame */
+    border-radius: 12px;
+    border: 1px solid var(--aqwe-border);
+    background: var(--aqwe-raised);
+    box-shadow: var(--aqwe-shadow);
+    overflow: hidden;
+    pointer-events: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+html.aqwe .aqwe-hover img { display: block; width: auto; height: auto; margin: 0 auto; }
+/* Category-true proportions: armor > cape > weapon > helm, squares never shrink */
+html.aqwe .aqwe-hover.ctg-weapon img { max-width: 620px; max-height: 360px; }
+html.aqwe .aqwe-hover.ctg-helm img { max-width: 320px; max-height: 320px; }
+html.aqwe .aqwe-hover.ctg-cape img { max-width: 400px; max-height: 410px; }
+html.aqwe .aqwe-hover.ctg-armor img { max-width: 340px; max-height: 430px; }
+html.aqwe .aqwe-hover.ctg-other img { max-width: 380px; max-height: 360px; }
+/* pairs sit side by side, never stacked: the container must fit 2 x 285px */
+html.aqwe .aqwe-hover.pair { max-width: 620px; }
+html.aqwe .aqwe-hover.pair img { max-width: 285px !important; max-height: 400px !important; }
+html.aqwe .aqwe-hover-name { font-weight: 700; color: var(--aqwe-accent); font-size: 13px; margin-bottom: 3px; }
+html.aqwe .aqwe-hover-name.aqwe-name-inv { color: var(--aqwe-owned); }
+html.aqwe .aqwe-hover-name.aqwe-name-bank { color: var(--aqwe-bank); }
+html.aqwe .aqwe-f { display: inline-block; min-width: 62px; font-weight: 700; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aqwe-gold); margin-right: 6px; }
+html.aqwe .aqwe-hover-desc { margin-top: 4px; font-style: italic; color: var(--aqwe-text-2); border-left: 2px solid var(--aqwe-gold); padding-left: 8px; }
+html.aqwe .aqwe-hover-cap {
+    flex-basis: 100%;
+    padding: 8px 13px;
+    font: 500 12px/1.55 "Segoe UI", system-ui, sans-serif;
+    color: var(--aqwe-text);
+    border-top: 1px solid var(--aqwe-border);
+    background: var(--aqwe-surface);
+}
+
+/* ---------------- Material sources (the quest chain, on demand) ---------------- */
+html.aqwe .aqwe-sub { font-weight: 500; font-size: 11.5px; color: var(--aqwe-muted); letter-spacing: 0.01em; }
+html.aqwe .aqwe-rate {
+    margin-left: 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 14px;   /* own box, same reason as the kind chips */
+    padding: 1px 8px;
+    border-radius: 999px;
+    color: var(--aqwe-accent);
+    background: color-mix(in srgb, var(--aqwe-accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--aqwe-accent) 35%, transparent);
+    white-space: nowrap;
+}
+/* The obtain block: a quiet rail branches out of the row's status icon,
+   one line per way, the kind labels colored by their family. Quantities
+   and "+N more" ride as plain muted text so the LINKS carry the weight. */
+html.aqwe .aqwe-src {
+    margin: -2px 14px 8px 22px;
+    padding: 2px 0 2px 10px;
+    border-left: 2px solid var(--aqwe-border);
+    font-size: 12px;
+    line-height: 16px;   /* the pinned rhythm: one look on every page */
+    color: var(--aqwe-muted);
+}
+/* hanging indent: a wrapped merge line continues under its own CONTENT
+   column (label width 58 + 6 gap), never under the label - long recipes
+   wrap gracefully with nothing hidden */
+html.aqwe .aqwe-src > div { margin: 3px 0; padding-left: 64px; text-indent: -64px; }
+html.aqwe .aqwe-src > div > * { text-indent: 0; }
+html.aqwe .aqwe-src a { color: var(--aqwe-text-2); }
+/* linkless CONTENT (a gold cost, a price value, the note's words) wears
+   the links' ink - only quantities and "+N more" stay muted meta */
+html.aqwe .aqwe-src-plain { color: var(--aqwe-text-2); }
+html.aqwe .aqwe-src-kind {
+    display: inline-block;
+    min-width: 58px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--aqwe-gold);
+    margin-right: 6px;
+}
+html.aqwe .aqwe-src-kind.k-drop { color: var(--aqwe-accent); }
+html.aqwe .aqwe-src-kind.k-quest { color: var(--aqwe-quest); }
+html.aqwe .aqwe-src-kind.k-merge { color: var(--aqwe-merge); }
+html.aqwe .aqwe-src-kind.k-gift { color: var(--aqwe-gift); }
+html.aqwe .aqwe-src-kind.k-location { color: var(--aqwe-muted); }
+html.aqwe .aqwe-src-kind.k-note { color: var(--aqwe-muted); }   /* the wiki's own words, quietly */
+/* "+N more" opens the rest in a card cut from the hover preview's cloth */
+html.aqwe .aqwe-more-wrap { position: relative; display: inline-block; }
+html.aqwe .aqwe-more { color: var(--aqwe-muted) !important; font-weight: 600; text-decoration: none; }
+html.aqwe .aqwe-more:hover { color: var(--aqwe-accent) !important; }
+/* fixed positioning (set by JS at the button) so no panel overflow can
+   ever clip it; the scrollbar wears the popup's own thin themed style */
+html.aqwe .aqwe-pop {
+    display: none;
+    position: fixed;
+    z-index: 99998;
+    min-width: 180px;
+    max-width: 300px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--aqwe-border);
+    background: var(--aqwe-raised);
+    box-shadow: var(--aqwe-shadow);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--aqwe-text-2) 45%, transparent) transparent;
+}
+html.aqwe .aqwe-pop::-webkit-scrollbar { width: 8px; }
+html.aqwe .aqwe-pop::-webkit-scrollbar-track { background: transparent; }
+html.aqwe .aqwe-pop::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--aqwe-text-2) 45%, transparent); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+html.aqwe .aqwe-pop.open { display: block; }
+html.aqwe .aqwe-pop > span { display: block; padding: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.aqwe .aqwe-pop-note { color: var(--aqwe-muted); font-size: 11px; }
+
+/* ---------------- Recipe rows v4: status, kind tags, real quantities ---------------- */
+html.aqwe .aqwe-st {
+    width: 18px; height: 18px;
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+html.aqwe .aqwe-st svg { width: 10px; height: 10px; }
+html.aqwe .aqwe-st.ok { background: var(--aqwe-owned-soft); color: var(--aqwe-owned); }
+html.aqwe .aqwe-st.bank { background: var(--aqwe-bank-soft); color: var(--aqwe-bank); }
+html.aqwe .aqwe-st.no { background: color-mix(in srgb, var(--aqwe-muted) 14%, transparent); color: var(--aqwe-muted); }
+/* Gold and temp rows: an icon instead of a verdict - neither a gold
+   balance nor a temp inventory is readable, so the row states the cost
+   and stays out of the meter. Their quantities stay muted like every
+   other number (gold ink on the amount read as "banked"). Temp icons
+   wear the quest purple: these materials only exist inside the quest,
+   the same family that marks Daily and Weekly gates. */
+html.aqwe .aqwe-st.gold { background: color-mix(in srgb, var(--aqwe-gold) 13%, transparent); color: var(--aqwe-gold); }
+html.aqwe .aqwe-st.temp { background: color-mix(in srgb, var(--aqwe-quest) 12%, transparent); color: var(--aqwe-quest); }
+/* N/A: an empty ring - the quest asks for nothing */
+html.aqwe .aqwe-st.na { background: color-mix(in srgb, var(--aqwe-muted) 14%, transparent); color: var(--aqwe-muted); }
+/* the only all-caps title we render: caps ink sits a pixel low in the
+   Segoe box while mixed-case reads centered - optical lift */
+html.aqwe .aqwe-na-name { position: relative; top: -1px; }
+/* the quiet property suffix on a title: " · Temporary Item · Stacks up to 13" */
+html.aqwe .aqwe-mat-sub { color: var(--aqwe-muted); }
+html.aqwe .aqwe-recipe-row { justify-content: flex-start; }
+html.aqwe .aqwe-recipe-row .aqwe-qty { margin-left: auto; }
+/* the chip rail: one flex line so every chip's center IS the row's center */
+html.aqwe .aqwe-kinds { display: inline-flex; align-items: center; gap: 8px; margin-left: 8px; }
+html.aqwe .aqwe-kinds:empty { margin-left: 0; }
+html.aqwe .aqwe-kinds .aqwe-kind, html.aqwe .aqwe-kinds .aqwe-rate { margin-left: 0; }
+html.aqwe .aqwe-kind {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 13px;   /* own box: a chip must never outgrow the row's 19px line */
+    padding: 1px 7px;
+    border-radius: 5px;
+    margin-left: 8px;
+    white-space: nowrap;
+    color: var(--aqwe-gold);
+    background: color-mix(in srgb, var(--aqwe-gold) 11%, transparent);
+    border: 1px solid color-mix(in srgb, var(--aqwe-gold) 38%, transparent);
+}
+html.aqwe .aqwe-kind.quest { color: var(--aqwe-quest); background: color-mix(in srgb, var(--aqwe-quest) 10%, transparent); border-color: color-mix(in srgb, var(--aqwe-quest) 35%, transparent); }
+html.aqwe .aqwe-kind.drop { color: var(--aqwe-accent); background: color-mix(in srgb, var(--aqwe-accent) 9%, transparent); border-color: color-mix(in srgb, var(--aqwe-accent) 32%, transparent); }
+html.aqwe .aqwe-kind.merge { color: var(--aqwe-text-2); background: color-mix(in srgb, var(--aqwe-text-2) 9%, transparent); border-color: color-mix(in srgb, var(--aqwe-text-2) 30%, transparent); }
+html.aqwe .aqwe-kind.gift { color: var(--aqwe-owned); background: var(--aqwe-owned-soft); border-color: color-mix(in srgb, var(--aqwe-owned) 32%, transparent); }
+html.aqwe .aqwe-recipe-row .aqwe-glyph { margin-left: 6px; }

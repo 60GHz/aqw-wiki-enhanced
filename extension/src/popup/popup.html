@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="evil">
+<head>
+<meta charset="UTF-8">
+<title>AQW Wiki Enhanced</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@font-face { font-family: "Inter"; src: url("../../assets/fonts/inter.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Roboto Condensed"; src: url("../../assets/fonts/roboto-condensed.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Cinzel"; src: url("../../assets/fonts/cinzel.woff2") format("woff2"); font-weight: 700; }
+:root, [data-theme="good"] {
+    --surface-page: #EDEDEA; --surface: #FBFBFA; --raised: #FFFFFF; --sunken: #E3E3DF;
+    --text: #26251F; --text-2: #55534A; --muted: #85817A;
+    --accent: #9E1D24; --accent-soft: rgba(158,29,36,0.08);
+    --gold: #A97E2F; --gold-bright: #C9A254; --gold-soft: rgba(169,126,47,0.12);
+    --owned: #1F7A31; --owned-soft: rgba(31,122,49,0.10);
+    --border: rgba(38,37,31,0.13); --border-strong: rgba(38,37,31,0.25);
+    --shadow-s: 0 1px 2px rgba(38,37,31,0.05), 0 1px 6px rgba(38,37,31,0.05);
+    --hero-img: url("../../assets/artix-good.png");
+    --hero-pos: 104px -31px; --hero-size: auto 300px; --hero-tint: #E9E2CE; --hero-fade: 42%;
+    --boost-xp: #272D2E; --boost-class: #660000; --boost-rep: #006600; --boost-gold: #8F6D14;
+    --boost-all: #5E2E91; --boost-uni: #4C4C55; --boost-dage: #1F3E8F; --boost-dungeon: #97921F; --boost-void: #7E2352; --boost-event: #C06B2B;
+}
+[data-theme="evil"] {
+    --surface-page: #1B1C21; --surface: #232429; --raised: #2A2B31; --sunken: #17181C;
+    --text: #E9E5DC; --text-2: #B5AFA2; --muted: #837D71;
+    --accent: #D8433B; --accent-soft: rgba(216,67,59,0.12);
+    --gold: #D4A853; --gold-bright: #E8C57A; --gold-soft: rgba(212,168,83,0.12);
+    --owned: #5FBF6E; --owned-soft: rgba(95,191,110,0.12);
+    --border: rgba(233,229,220,0.10); --border-strong: rgba(233,229,220,0.20);
+    --shadow-s: 0 1px 2px rgba(0,0,0,0.30), 0 1px 6px rgba(0,0,0,0.25);
+    --hero-img: url("../../assets/artix-evil.png");
+    --hero-pos: 132px -30px; --hero-size: auto 240px; --hero-tint: #26201E; --hero-fade: 30%;
+    --boost-xp: #8FB8BD; --boost-class: #E06A5E; --boost-rep: #58C978; --boost-gold: #D1AB3C;
+    --boost-all: #B78FE0; --boost-uni: #A7ABB8; --boost-dage: #86A6EC; --boost-dungeon: #E0D468; --boost-void: #D26C9B; --boost-event: #E8945A;
+}
+html { width: 380px; overflow: hidden; scrollbar-width: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; }
+body {
+    width: 380px;
+    font: 13px/1.5 "Inter", "Segoe UI", system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--text);
+}
+.hero {
+    position: relative;
+    min-height: 92px;
+    padding: 12px 20px 4px;
+    overflow: hidden;
+    background: var(--hero-img) var(--hero-pos) / var(--hero-size) no-repeat,
+                linear-gradient(105deg, var(--surface) var(--hero-fade), var(--hero-tint) 100%);
+}
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--surface) 34%, transparent 62%); pointer-events: none; }
+.hero > * { position: relative; z-index: 1; }
+.hero-row { display: flex; align-items: center; gap: 12px; }
+/* the lockup's box spans the emblem's full 46px and centers its own two
+   lines inside, then rides 2px low: Cinzel carries its visual weight above
+   the baseline, so true center reads high next to the emblem art */
+.hero-row > div:last-child { height: 46px; display: flex; flex-direction: column; justify-content: center; padding-top: 4px; }
+.emblem { width: 46px; height: 46px; flex: none; border-radius: 12px; border: 1px solid var(--gold); background: url("../../assets/icon.png") center / cover; box-shadow: var(--shadow-s); }
+.wordmark { font-family: "Cinzel", "Palatino Linotype", serif; font-weight: 700; font-size: 15.5px; letter-spacing: 0.01em; line-height: 1.15; white-space: nowrap; }
+.byline { margin-top: 2px; font-size: 11px; font-weight: 500; color: var(--muted); display: flex; gap: 7px; align-items: center; }
+.byline .enh { color: var(--accent); font-weight: 700; font-size: 10px; letter-spacing: 0.14em; }
+/* 12 above (to the emblem row) = 4 + 8 below (to the search bar): still
+   exactly midway, two pixels tighter each side - and the taller buttons
+   below fill the band, so the hero reads composed instead of airy */
+.theme-switch { position: relative; display: inline-flex; margin-top: 12px; padding: 2px; background: color-mix(in srgb, var(--sunken) 80%, transparent); border: 1px solid var(--border); border-radius: 999px; backdrop-filter: blur(4px); touch-action: none; }
+.theme-switch .seg-ind { position: absolute; top: 2px; bottom: 2px; border-radius: 999px; background: var(--raised); box-shadow: var(--shadow-s); transition: left 180ms cubic-bezier(0.34, 1.3, 0.64, 1), width 180ms cubic-bezier(0.34, 1.3, 0.64, 1); }
+.theme-switch.dragging .seg-ind { transition: none; }
+.theme-switch button { position: relative; z-index: 1; }
+/* fixed width, sized for the DENSER label: Good's ink (sun + four letters)
+   needs 12px of air inside its pill, and Evil inherits the same box */
+.theme-switch button { appearance: none; border: 0; width: 72px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 0; font: 600 11.5px "Inter", "Segoe UI", system-ui, sans-serif; color: var(--muted); background: transparent; border-radius: 999px; cursor: pointer; }
+.theme-switch button svg { width: 12px; height: 12px; flex: none; }
+.theme-switch button.active { color: var(--text); }
+[data-theme="good"] .theme-switch button.active { color: var(--accent); }
+[data-theme="evil"] .theme-switch button.active { color: var(--gold-bright); }
+
+.section { padding: 10px 20px; }
+.section + .section { border-top: 1px solid var(--border); }
+/* the first section snugs to the hero: its 8px gap to the search bar
+   matches the bar-to-chips 8px below it */
+section.section:first-of-type { padding-top: 8px; }
+/* the goals block sits 3px higher in its section (head margin 2): the gap
+   under the third goal's text now mirrors the gap over the first one */
+.section.goals { padding-bottom: 9px; }
+/* min-height = the View All link's line box (11.5px x 1.5), so the row keeps
+   the same height when the link empties - the popup never moves a hair */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2px; min-height: 17.25px; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.section-link { font-size: 11.5px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.section-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.search-box { position: relative; }
+.suggest { position: absolute; top: 42px; left: 0; right: 0; z-index: 50; box-shadow: var(--shadow-s); }
+.search-box input {
+    width: 100%; height: 38px;
+    /* right padding clears the Enter button plus the same 8px breath the
+       button keeps from the input's edge - typed text never hides under it */
+    padding: 0 68px 0 37px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--sunken);
+    color: var(--text);
+    font: 13.5px "Inter", "Segoe UI", system-ui, sans-serif;
+    outline: 0;
+}
+/* the ghost text recedes: the ink color at 45% reads as a light neutral
+   gray in both themes - quieter than --muted's warm gold-gray, which sat
+   too close to the input's own voice */
+.search-box input::placeholder { color: color-mix(in srgb, var(--text) 45%, transparent); }
+.search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+/* 16px glyph on the input's 38px height = an integer 11px inset both sides */
+.search-box .search-ico { position: absolute; left: 12px; top: 11px; width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+#search-go { position: absolute; right: 8px; top: 8px; appearance: none; font: 600 10px "Inter", "Segoe UI", system-ui, sans-serif; color: var(--muted); padding: 3px 8px; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 6px; background: var(--raised); cursor: pointer; }
+#search-go:hover { color: var(--accent); }
+.browse-chip.on { color: #fff !important; background: var(--gold); border-color: var(--gold); }
+.suggest .tag-chip { color: var(--gold); font-weight: 700; font-size: 11px; }
+/* exactly six rows tall (6 x 32.75px row + 2px borders); the scrollbar
+   carries the whole tag vocabulary */
+.suggest { border: 1px solid var(--border-strong); border-radius: 10px; background: var(--raised); overflow-y: auto; overflow-x: hidden; max-height: 198.5px; display: none; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+.suggest::-webkit-scrollbar { width: 8px; }
+.suggest::-webkit-scrollbar-track { background: transparent; }
+.suggest::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.suggest::-webkit-scrollbar-thumb:hover { background: var(--muted); border: 2px solid transparent; background-clip: padding-box; }
+.suggest.open { display: block; }
+.suggest a { display: flex; justify-content: space-between; gap: 8px; padding: 7px 12px; color: var(--text); text-decoration: none; font-size: 12.5px; }
+.suggest a:hover { background: var(--accent-soft); }
+.suggest .own { color: var(--owned); font-weight: 700; font-size: 11px; }
+.browse-row { display: flex; gap: 8px; margin-top: 8px; }
+/* hover is color and depth only - a transform lift flips compositor layers
+   and visibly re-rasterizes the hero's text (the ENHANCED glow bug) */
+.browse-chip { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 8px; white-space: nowrap; border-radius: 10px; border: 1px solid var(--border); background: var(--raised); color: var(--text-2); font-size: 11.5px; font-weight: 600; text-decoration: none; transition: color 130ms ease, border-color 130ms ease, box-shadow 130ms ease, background 130ms ease; }
+.browse-chip:hover { color: var(--accent); border-color: var(--border-strong); box-shadow: var(--shadow-s); }
+.browse-chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 40%, transparent); background: var(--gold-soft); }
+/* the negative top / positive bottom pair lifts each glyph 1px above true
+   flex center - dead center reads LOW next to 11.5px lowercase-heavy labels */
+.browse-chip svg { width: 12px; height: 12px; flex: none; margin-top: -1px; margin-bottom: 1px; }
+/* the shield's ink stops 3px short of its viewBox edges (the tag and book
+   fill theirs) - two extra pixels each way make the trio read one height */
+#armory svg { width: 14px; height: 14px; margin: -2px -1px 0; }
+
+/* exactly three INTEGER 31px rows (1px border + 5px pads + a fixed 20px
+   name line) - every box identical, and the bar's 12px offsets rasterize
+   on whole pixels instead of alternating half-pixel lines */
+/* flow-root: the empty card's margins stay INSIDE this box instead of
+   collapsing through it - its 10px gaps hold in both directions */
+#goals { min-height: 93px; display: flow-root; }
+.goal { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-top: 1px solid transparent; }
+.goal-bar { width: 86px; height: 6px; flex: none; background: var(--sunken); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.goal-bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width 400ms ease; }
+/* the 2px top margin rides the number 1px below flex center - its ink then
+   sits 10 over / 10 under within the row, level with the name's optical line */
+.goal-pct { width: 36px; flex: none; margin-top: 2px; text-align: right; font-size: 11.5px; font-weight: 700; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.goal + .goal { border-top-color: color-mix(in srgb, var(--border) 55%, transparent); }
+.goal a { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); font-weight: 600; text-decoration: none; font-size: 13px; line-height: 20px; }
+.goal a:hover { color: var(--accent); }
+.goal button { appearance: none; border: 0; background: none; width: 16px; flex: none; display: grid; place-items: center; padding: 0; color: var(--muted); cursor: pointer; font-size: 13px; line-height: 1; }
+.goal button:hover { color: var(--accent); }
+/* 8 + 85 fills the block's 93px exactly (popup never moves between the
+   states); the card runs one pixel deeper toward the separator so the
+   section reads furnished, not vacant */
+.goal-empty {
+    height: 85px;
+    margin: 7px 0 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+.goal-empty .ge-star {
+    width: 34px; height: 34px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: var(--gold-soft);
+    color: var(--gold-bright);
+    font-size: 17px;
+}
+/* lead line steps up half a size, echoing the inv-card's title/meta rhythm */
+.goal-empty strong { color: var(--text-2); font-size: 12.5px; }
+
+.inv-card { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: var(--sunken); border: 1px solid var(--border); border-radius: 10px; }
+/* 10px dot: its center sits at x=19, the same vertical line the boost
+   bolt's center holds below (14px pad - 4px pull + 9px radius). The outer
+   halo makes it read as a LIGHT, not a dot - pure box-shadow, so the
+   geometry and every alignment stay untouched. */
+.inv-dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--owned); box-shadow: 0 0 0 3px var(--owned-soft), 0 0 7px 1px color-mix(in srgb, var(--owned) 60%, transparent); }
+.inv-dot.err { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), 0 0 7px 1px color-mix(in srgb, var(--accent) 60%, transparent); }
+/* amber: the shown data is real but the last refresh failed - stale, not broken */
+.inv-dot.stale { background: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft), 0 0 7px 1px color-mix(in srgb, var(--gold) 60%, transparent); }
+.inv-copy { flex: 1; min-width: 0; }
+.inv-title { font-size: 13.5px; font-weight: 600; }
+.inv-meta { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.inv-meta strong { color: var(--text-2); }
+.icon-btn { appearance: none; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text-2); cursor: pointer; font-size: 14px; transition: color 130ms ease, border-color 130ms ease, box-shadow 130ms ease; }
+.icon-btn:hover { color: var(--accent); border-color: var(--border-strong); box-shadow: var(--shadow-s); }
+.icon-btn { display: grid; place-items: center; }
+.icon-btn .ic { display: grid; place-items: center; width: 16px; height: 16px; }
+.icon-btn .ic svg { width: 16px; height: 16px; }
+.icon-btn.spin .ic { animation: aqwe-spin 0.9s linear infinite; }
+@keyframes aqwe-spin { to { transform: rotate(360deg); } }
+
+.boost-row { display: none; gap: 8px; margin-top: 8px; }
+.boost-row.show { display: flex; }
+.boost-card {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 50px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 12.5px;
+    overflow: hidden;
+}
+.boost-card .b-ico { width: 18px; height: 18px; flex: none; display: grid; place-items: center; border-radius: 50%; margin-left: -4px; }
+.boost-card .b-ico svg { width: 10px; height: 10px; }
+.boost-card .b-copy { flex: 1; min-width: 0; line-height: 1.3; }
+.boost-card .b-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.boost-card .sub { display: block; font-size: 10.5px; font-weight: 500; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.boost-card .b-ends { font-size: 11px; font-weight: 600; white-space: nowrap; }
+
+.pref-row { display: flex; align-items: center; gap: 12px; }
+.pref-copy { flex: 1; }
+.pref-name { font-size: 13px; font-weight: 600; }
+.pref-desc { font-size: 11.5px; color: var(--muted); }
+.seg { position: relative; display: inline-flex; padding: 2px; background: var(--sunken); border: 1px solid var(--border); border-radius: 10px; touch-action: none; }
+.seg-ind { position: absolute; top: 2px; bottom: 2px; border-radius: 8px; background: var(--raised); box-shadow: var(--shadow-s); transition: left 180ms cubic-bezier(0.34, 1.3, 0.64, 1), width 180ms cubic-bezier(0.34, 1.3, 0.64, 1); }
+.seg.dragging .seg-ind { transition: none; }
+.seg button { position: relative; z-index: 1; appearance: none; border: 0; padding: 4px 10px; font: 600 11px "Inter", "Segoe UI", system-ui, sans-serif; color: var(--muted); background: transparent; border-radius: 6px; cursor: pointer; }
+.seg button.active { color: var(--accent); }
+.builtin-note { margin-top: 6px; font-size: 11px; color: var(--muted); }
+.builtin-note strong { color: var(--text-2); }
+.builtin-note a { color: var(--accent); font-weight: 700; text-decoration: none; cursor: pointer; }
+.builtin-note a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+.foot { display: flex; align-items: center; justify-content: space-between; padding: 5px 20px; border-top: 1px solid var(--border); background: var(--sunken); font-size: 11.5px; color: var(--muted); }
+.foot-links { display: inline-flex; align-items: center; gap: 6px; }
+.foot a { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); font-weight: 600; text-decoration: none; }
+.foot a:hover { color: var(--accent); }
+.foot a svg { width: 12px; height: 12px; flex: none; }
+.foot strong { color: var(--text-2); }
+/* the signature opens the forger's own CharPage */
+.foot #charpage { display: inline; text-decoration: none; }
+.foot #charpage:hover strong { color: var(--accent); }
+/* the terminal e of Chaos Eye lands exactly on the cards' right edge */
+.foot span:last-child { padding-right: 1px; }
+</style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-row">
+            <div class="emblem"></div>
+            <div>
+                <div class="wordmark">AQW Wiki</div>
+                <div class="byline"><span class="enh">ENHANCED</span> <span id="version"></span></div>
+            </div>
+        </div>
+        <div class="theme-switch" id="theme-switch" role="radiogroup"><span class="seg-ind" id="theme-ind"></span>
+            <button type="button" data-theme-btn="good"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"/></svg>Good</button>
+            <button type="button" data-theme-btn="evil"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 3.5 5.6 3.5 10.2c0 2.6 1.2 4.6 3 5.9v2.4c0 .8.7 1.5 1.5 1.5h1v-2h2v2h2v-2h2v2h1c.8 0 1.5-.7 1.5-1.5v-2.4c1.8-1.3 3-3.3 3-5.9C20.5 5.6 17 2 12 2zM8.8 12.5c-1 0-1.8-.8-1.8-1.8S7.8 9 8.8 9s1.8.8 1.8 1.8-.8 1.7-1.8 1.7zm6.4 0c-1 0-1.8-.8-1.8-1.8S14.2 9 15.2 9s1.8.8 1.8 1.8-.8 1.7-1.8 1.7z"/></svg>Evil</button>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="search-box">
+            <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="search" type="text" placeholder="Search items, monsters, locations" autocomplete="off"><button id="search-go" type="button" title="Search (Enter)">Enter ↵</button>
+            <div class="suggest" id="suggest"></div>
+        </div>
+        <div class="browse-row">
+            <a class="browse-chip" href="#" id="tag-toggle" title="Toggle tag search in the bar above"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4L12 22 2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Search by Tag</a>
+            <a class="browse-chip" href="#" id="armory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6z"/><path d="M12 8v5M9.5 10.5h5"/></svg>The Armory</a>
+            <a class="browse-chip" href="http://aqwwiki.wikidot.com/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Wiki Home</a>
+        </div>
+    </section>
+
+    <section class="section goals">
+        <div class="section-head">
+            <span class="section-label">Farm Goals</span>
+            <a class="section-link" id="goal-count" href="#"></a>
+        </div>
+        <div id="goals"></div>
+    </section>
+
+    <section class="section">
+        <div class="inv-card">
+            <span class="inv-dot" id="inv-dot"></span>
+            <div class="inv-copy">
+                <div class="inv-title" id="inv-title">Not Synced Yet</div>
+                <div class="inv-meta" id="inv-meta">Waiting for your Manage Account login</div>
+            </div>
+            <button class="icon-btn" id="sync-btn" title="Sync Now"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span></button>
+        </div>
+        <div class="boost-row" id="boost"></div>
+    </section>
+
+    <section class="section">
+        <div class="pref-row">
+            <div class="pref-copy">
+                <div class="pref-name">Hover Previews</div>
+                <div class="pref-desc">Item art when you hover a link</div>
+            </div>
+            <div class="seg" id="hover-seg"><span class="seg-ind" id="seg-ind"></span>
+                <button type="button" data-mode="clean">Clean</button>
+                <button type="button" data-mode="detailed">Detailed</button>
+                <button type="button" data-mode="off">Off</button>
+            </div>
+        </div>
+        <p class="builtin-note" id="note"><strong>Everything else just works.</strong> Ownership badges, recipes and automatic inventory sync are built in.</p>
+    </section>
+
+    <footer class="foot">
+        <span class="foot-links"><a id="github-link" href="https://github.com/" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.8a10.2 10.2 0 0 0-3.2 19.9c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.2-1.5-1.2-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.1-4.7-5a4 4 0 0 1 1-2.8 3.7 3.7 0 0 1 .1-2.7s.9-.3 2.8 1a9.7 9.7 0 0 1 5.2 0c2-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a4 4 0 0 1 1 2.8c0 3.9-2.4 4.7-4.7 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 12 1.8z"/></svg>GitHub</a> · <a href="#" id="donate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>Donate</a></span>
+        <span>Forged by <a id="charpage" href="https://account.aq.com/CharPage?id=Chaos+Eye" target="_blank"><strong>Chaos Eye</strong></a></span>
+    </footer>
+
+<script src="../data/tags.js"></script>
+<script src="../data/items-index.js"></script>
+<script src="../data/legend-pages.js"></script><script src="../common.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

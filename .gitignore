@@ -1,0 +1,10 @@
+# build output - rebuilt any time with extension/build.ps1
+extension/dist/
+
+# crawl working data (hundreds of MB; the built datasets ship in src/data)
+tools/data-work/
+
+__pycache__/
+*.pyc
+Thumbs.db
+.DS_Store

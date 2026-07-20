@@ -1,0 +1,95 @@
+{
+    "manifest_version": 3,
+    "name": "AQW Wiki Enhanced",
+    "version": "0.1.0",
+    "description": "Enhances the AQW Wiki Experience with tons of built-in features. Forged by Chaos Eye.",
+    "permissions": [
+        "storage",
+        "alarms"
+    ],
+    "host_permissions": [
+        "*://aqwwiki.wikidot.com/*",
+        "https://account.aq.com/*",
+        "https://www.artix.com/*"
+    ],
+    "background": {
+        "service_worker": "src/background.js"
+    },
+    "action": {
+        "default_popup": "src/popup/popup.html",
+        "default_icon": {
+            "16": "assets/icon16.png",
+            "48": "assets/icon48.png",
+            "128": "assets/icon128.png"
+        }
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://aqwwiki.wikidot.com/*"
+            ],
+            "css": [
+                "src/content/wiki.css"
+            ],
+            "js": [
+                "src/data/wikidot-theme.js",
+                "src/content/boot.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "*://aqwwiki.wikidot.com/*"
+            ],
+            "js": [
+                "src/data/legend-pages.js",
+                "src/common.js",
+                "src/content/hover.js",
+                "src/content/wiki.js"
+            ],
+            "run_at": "document_idle"
+        },
+        {
+            "matches": [
+                "https://account.aq.com/*"
+            ],
+            "js": [
+                "src/data/legend-pages.js",
+                "src/common.js",
+                "src/content/account.js"
+            ],
+            "run_at": "document_idle"
+        },
+        {
+            "matches": [
+                "https://account.aq.com/CharPage*",
+                "https://account.aq.com/AQW/*"
+            ],
+            "css": [
+                "src/content/hover.css"
+            ],
+            "js": [
+                "src/data/legend-pages.js",
+                "src/common.js",
+                "src/content/hover.js",
+                "src/content/account-hover.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "assets/*"
+            ],
+            "matches": [
+                "*://aqwwiki.wikidot.com/*"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
+    }
+}

@@ -1,0 +1,35 @@
+/* AQW Wiki Enhanced - hover preview styles (CharPage etc.). Theme-aware. */
+:root {
+    --hv-raised: #FFFFFF; --hv-surface: #FBFBFA; --hv-text: #26251F; --hv-text2: #55534A;
+    --hv-border: rgba(38, 37, 31, 0.2); --hv-accent: #9E1D24; --hv-gold: #A97E2F;
+    --hv-owned: #1F7A31; --hv-bank: #9A6F1D;
+    --hv-shadow: 0 4px 12px rgba(38, 37, 31, 0.12), 0 16px 40px rgba(38, 37, 31, 0.18);
+}
+[data-aqwe-theme="evil"] {
+    --hv-raised: #2A2B31; --hv-surface: #232429; --hv-text: #E9E5DC; --hv-text2: #B5AFA2;
+    --hv-border: rgba(233, 229, 220, 0.2); --hv-accent: #E06A5E; --hv-gold: #D4A853;
+    --hv-owned: #5FBF6E; --hv-bank: #D4A853;
+    --hv-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.aqwe-hover {
+    position: fixed; z-index: 99999; max-width: 640px;   /* wide art needs 620 + frame */
+    border-radius: 12px; border: 1px solid var(--hv-border);
+    background: var(--hv-raised); box-shadow: var(--hv-shadow);
+    overflow: hidden; pointer-events: none; display: flex; flex-wrap: wrap; justify-content: center;
+}
+.aqwe-hover img { display: block; width: auto; height: auto; margin: 0 auto; }
+/* Size caps mirror wiki.css exactly - the wiki look is the approved reference */
+.aqwe-hover.ctg-weapon img { max-width: 620px; max-height: 360px; }
+.aqwe-hover.ctg-helm img { max-width: 320px; max-height: 320px; }
+.aqwe-hover.ctg-cape img { max-width: 400px; max-height: 410px; }
+.aqwe-hover.ctg-armor img { max-width: 340px; max-height: 430px; }
+.aqwe-hover.ctg-other img { max-width: 380px; max-height: 360px; }
+/* pairs sit side by side, never stacked: the container must fit 2 x 285px */
+.aqwe-hover.pair { max-width: 620px; }
+.aqwe-hover.pair img { max-width: 285px !important; max-height: 400px !important; }
+.aqwe-hover-cap { flex-basis: 100%; padding: 8px 13px; font: 500 12px/1.55 "Segoe UI", system-ui, sans-serif; color: var(--hv-text); border-top: 1px solid var(--hv-border); background: var(--hv-surface); }
+.aqwe-hover-name { font-weight: 700; color: var(--hv-accent); font-size: 13px; margin-bottom: 3px; }
+.aqwe-hover-name.aqwe-name-inv { color: var(--hv-owned); }
+.aqwe-hover-name.aqwe-name-bank { color: var(--hv-bank); }
+.aqwe-f { display: inline-block; min-width: 62px; font-weight: 700; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--hv-gold); margin-right: 6px; }
+.aqwe-hover-desc { margin-top: 4px; font-style: italic; color: var(--hv-text2); border-left: 2px solid var(--hv-gold); padding-left: 8px; }

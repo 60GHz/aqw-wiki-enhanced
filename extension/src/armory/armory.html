@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="good">
+<head>
+<meta charset="UTF-8">
+<title>The Armory - AQW Wiki Enhanced</title>
+<script src="../pages-boot.js"></script>
+<link rel="stylesheet" href="../content/hover.css">
+<style>
+/* The Armory: your inventory, in the game's own order, with the search,
+   sorting and rarity filters the bag never had. design/armory.html is the
+   blessed spec - this page mirrors it, fed by the synced inventory. */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@font-face { font-family: "Inter"; src: url("../../assets/fonts/inter.woff2") format("woff2"); font-weight: 100 900; }
+:root, [data-theme="good"] {
+    --surface-page: #EDEDEA; --surface: #FBFBFA; --raised: #FFFFFF; --sunken: #E3E3DF;
+    --text: #26251F; --text-2: #55534A; --muted: #85817A;
+    --accent: #9E1D24; --accent-soft: rgba(158,29,36,0.08);
+    --gold: #A97E2F; --gold-bright: #C9A254; --gold-soft: rgba(169,126,47,0.12);
+    --owned: #1F7A31; --owned-soft: rgba(31,122,49,0.10);
+    --banked: #9A6F1D; --banked-soft: rgba(154,111,29,0.13);
+    --border: rgba(38,37,31,0.13); --border-strong: rgba(38,37,31,0.25);
+    --shadow-s: 0 1px 2px rgba(38,37,31,0.05), 0 1px 6px rgba(38,37,31,0.05);
+    --shadow-m: 0 2px 6px rgba(38,37,31,0.07), 0 8px 24px rgba(38,37,31,0.09);
+    --legend: #7B2CBF;
+    --rarity-default: #6B6257; --rarity-gone: #4D6B1A; --rarity-champion: #A3242C;
+    --rarity-prestige: #8A6A1F; --rarity-hard: #7B2CBF; --rarity-channel: #2A4C9B;
+    --rarity-merch: #97921F; --rarity-seasonal: #C0417E; --rarity-frostval: #1F6E74;
+    --rarity-artifact: #B06414;
+    --rarity-rainbow: linear-gradient(90deg, #A3242C, #8A6A1F, #1F7A31, #2A4C9B, #7B2CBF);
+    --rarity-infinity: #5B4E8A;
+    --rarity-god: linear-gradient(100deg, #1F6E74, #2A4C9B, #7B2CBF, #C0417E, #A97E2F);
+}
+[data-theme="evil"] {
+    --surface-page: #1B1C21; --surface: #232429; --raised: #2A2B31; --sunken: #17181C;
+    --text: #E9E5DC; --text-2: #B5AFA2; --muted: #837D71;
+    --accent: #D8433B; --accent-soft: rgba(216,67,59,0.12);
+    --gold: #D4A853; --gold-bright: #E8C57A; --gold-soft: rgba(212,168,83,0.12);
+    --owned: #5FBF6E; --owned-soft: rgba(95,191,110,0.12);
+    --banked: #D4A853; --banked-soft: rgba(212,168,83,0.14);
+    --border: rgba(233,229,220,0.10); --border-strong: rgba(233,229,220,0.20);
+    --shadow-s: 0 1px 2px rgba(0,0,0,0.30), 0 1px 6px rgba(0,0,0,0.25);
+    --shadow-m: 0 2px 6px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.35);
+    --legend: #B98AE8;
+    --rarity-default: #A99E90; --rarity-gone: #9DBF63; --rarity-champion: #E0776F;
+    --rarity-prestige: #D9B65C; --rarity-hard: #B98AE8; --rarity-channel: #8AA9E8;
+    --rarity-merch: #E0D468; --rarity-seasonal: #E88BC0; --rarity-frostval: #6FC3CB;
+    --rarity-artifact: #E8945A;
+    --rarity-rainbow: linear-gradient(90deg, #E0776F, #D9B65C, #5FBF6E, #8AA9E8, #B98AE8);
+    --rarity-infinity: #A79CD8;
+    --rarity-god: linear-gradient(100deg, #6FC3CB, #8AA9E8, #B98AE8, #E88BC0, #E8C57A);
+}
+/* the page scrollbar comes and goes with filters - reserve its lane so
+   toggling New or a rarity never shifts the whole UI sideways */
+html { scrollbar-gutter: stable; }
+body {
+    background: var(--surface-page);
+    color: var(--text);
+    font: 14px/1.6 "Inter", "Segoe UI", system-ui, sans-serif;
+    padding: 40px 20px 80px;
+}
+.wrap { max-width: 860px; margin: 0 auto; }
+/* Wiki title face; Cinzel stays reserved for the brand wordmark */
+h1 { font-family: "Times New Roman", Times, serif; font-weight: 400; font-size: 28px; margin-bottom: 4px; }
+.sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+
+.toolbar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.search-box { position: relative; flex: 1; min-width: 240px; }
+.search-box .search-ico { position: absolute; left: 13px; top: 11.5px; width: 15px; height: 15px; color: var(--muted); pointer-events: none; }
+.search-box input {
+    width: 100%;
+    height: 38px;
+    padding: 0 14px 0 37px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--sunken);
+    color: var(--text);
+    font: 13.5px "Inter", "Segoe UI", system-ui, sans-serif;
+    outline: 0;
+}
+.search-box input::placeholder { color: var(--muted); }
+.search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.slider { position: relative; display: inline-flex; padding: 2px; background: var(--sunken); border: 1px solid var(--border); border-radius: 10px; touch-action: none; user-select: none; }
+.slider .ind { position: absolute; top: 2px; bottom: 2px; border-radius: 8px; background: var(--raised); box-shadow: var(--shadow-s); transition: left 180ms cubic-bezier(0.34,1.3,0.64,1), width 180ms cubic-bezier(0.34,1.3,0.64,1); }
+.slider.dragging .ind { transition: none; }
+.slider button { position: relative; z-index: 1; appearance: none; border: 0; padding: 8px 13px; font: 600 12px "Inter", sans-serif; color: var(--muted); background: transparent; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.slider button.active { color: var(--accent); }
+.cats { display: flex; width: 100%; margin-bottom: 10px; }
+.cats button { flex: 1; min-width: 0; padding: 8px 6px; }
+.subwrap { overflow: hidden; max-height: 0; transition: max-height 220ms ease, margin-bottom 220ms ease; }
+.subwrap.open { max-height: 40px; margin-bottom: 10px; }
+.sub-slider { display: flex; width: 100%; }
+.sub-slider button { flex: 1; min-width: 0; padding: 6px 4px; font-size: 11px; border-radius: 7px; }
+.sub-slider .ind { border-radius: 7px; }
+
+.statbar { display: flex; align-items: center; gap: 8px; min-height: 34px; margin-bottom: 12px; }
+.stat { font-size: 12.5px; color: var(--muted); }
+.stat strong { color: var(--text-2); font-weight: 600; }
+.statbar .grow { flex: 1; }
+.pillbtn { appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font: 600 11.5px "Inter", sans-serif; cursor: pointer; white-space: nowrap; }
+.pillbtn:hover { color: var(--accent); border-color: var(--border-strong); }
+.pillbtn.gold-on { color: #fff; background: var(--gold); border-color: var(--gold); }
+.pillbtn .n { font-weight: 700; margin-left: 2px; }
+.order-wrap { position: relative; }
+.order-wrap::after { content: ""; position: absolute; right: 11px; top: 50%; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-70%) rotate(45deg); color: var(--muted); pointer-events: none; }
+.order-wrap select { appearance: none; width: 128px; padding: 5px 24px 5px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font: 600 11.5px "Inter", sans-serif; cursor: pointer; outline: 0; }
+.order-wrap select:hover { color: var(--accent); border-color: var(--border-strong); }
+
+.rarity-wrap { position: relative; }
+.rarity-wrap.hidden { display: none; }
+.pop { position: absolute; right: 0; top: 32px; z-index: 40; width: 240px; max-height: 330px; overflow-y: auto; background: var(--raised); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: var(--shadow-m); padding: 6px; display: none; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+.pop.open { display: block; }
+.pop::-webkit-scrollbar { width: 8px; }
+.pop::-webkit-scrollbar-track { background: transparent; }
+.pop::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.pop .pop-head { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px 6px; font: 700 10px "Inter", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pop .pop-head a { color: var(--accent); font: 600 11px "Inter", sans-serif; text-decoration: none; cursor: pointer; }
+.pop label { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 6px; font: 500 12.5px "Inter", sans-serif; cursor: pointer; }
+.pop label:hover { background: var(--accent-soft); }
+.pop label .cnt { margin-left: auto; font: 600 11px "Inter", sans-serif; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pop input { accent-color: var(--accent); }
+
+.row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); margin-bottom: 6px; transition: border-color 130ms ease, box-shadow 130ms ease; }
+.row:hover { border-color: var(--border-strong); box-shadow: var(--shadow-s); }
+.row .grow { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+/* integer 20px name line -> every row is exactly 38px and stacks on whole
+   pixels; the pills stopped alternating between crisp and blurry rows */
+.row a { min-width: 0; color: var(--text); font-weight: 500; line-height: 20px; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row a:hover { color: var(--accent); }
+.row .qty { font: 600 12px "Inter", sans-serif; color: var(--muted); font-variant-numeric: tabular-nums; }
+.row .type { flex: none; width: 92px; font: 500 11px "Inter", sans-serif; color: var(--muted); }
+.tag { flex: none; font: 700 9.5px "Inter", sans-serif; letter-spacing: 0.06em; padding: 1px 6px; border-radius: 999px; text-transform: uppercase; }
+.tag.new { color: var(--accent); background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.tag.ac { color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); }
+.tag.legend { color: var(--legend); border: 1px solid color-mix(in srgb, var(--legend) 40%, transparent); }
+/* flex-centered, not text-align: the inline column carried the body's
+   22.4px line box, growing every chip row to 40.39px - rows must stack at
+   exactly 38 on whole pixels or the pills blur on alternating rows */
+.rar-col { flex: none; width: 150px; display: flex; align-items: center; justify-content: center; }
+.rar-col.hidden { display: none; }
+.rarity { display: inline-block; font: 600 10.5px/15px "Inter", sans-serif; padding: 1px 9px; border-radius: 999px; color: var(--rc, var(--rarity-default)); background: color-mix(in srgb, var(--rc, var(--rarity-default)) 10%, transparent); border: 1px solid color-mix(in srgb, var(--rc, var(--rarity-default)) 30%, transparent); white-space: nowrap; }
+.rar-gone     { --rc: var(--rarity-gone); }
+.rar-prestige { --rc: var(--rarity-prestige); }
+.rar-champion { --rc: var(--rarity-champion); }
+.rar-artifact { --rc: var(--rarity-artifact); }
+.rar-seasonal { --rc: var(--rarity-seasonal); }
+.rar-channel  { --rc: var(--rarity-channel); }
+.rar-hard     { --rc: var(--rarity-hard); }
+.rar-merch    { --rc: var(--rarity-merch); }
+.rar-frostval { --rc: var(--rarity-frostval); }
+.rarity.rar-rainbow { background: var(--rarity-rainbow); -webkit-background-clip: text; background-clip: text; color: transparent; border-color: var(--border-strong); }
+.rar-infinity { --rc: var(--rarity-infinity); }
+/* GOD: no wiki page anywhere - mod items, one-of-ones, the staff's own
+   oversights. A cool holo sweep in a gold frame, above even the rainbow. */
+.rarity.rar-god { background: var(--rarity-god); -webkit-background-clip: text; background-clip: text; color: transparent; border-color: var(--gold); }
+/* line-height normal, not the body's 1.6: the inherited line box floated
+   the label 0.91px above the pill's center (icon 0.00, text -0.91 in the
+   harness); the font's own metrics center it exactly.
+   Height 19 = EXACTLY the rarity chip's box (15px line + 2 padding + 2
+   border) - the pill's extra bottom pixel next to the chips is gone and
+   the glyph re-centers itself in the smaller pill. */
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex: none; min-width: 96px; height: 19px; font-size: 10.5px; font-weight: 700; line-height: normal; padding: 0 8px; border-radius: 999px; }
+.pill.inv { color: var(--owned); background: var(--owned-soft); border: 1px solid color-mix(in srgb, var(--owned) 35%, transparent); }
+.pill.bank { color: var(--banked); background: var(--banked-soft); border: 1px solid color-mix(in srgb, var(--banked) 35%, transparent); }
+/* even 10px glyph; the 1px lift is optical - the glyphs' ink reads low
+   at geometric center, one pixel up reads perfect */
+.pill svg { width: 10px; height: 10px; position: relative; top: -1px; }
+.more { appearance: none; width: 100%; padding: 10px; margin-top: 8px; border: 1px dashed var(--border-strong); border-radius: 10px; background: none; color: var(--text-2); font: 600 12.5px "Inter", sans-serif; cursor: pointer; }
+.more:hover { color: var(--accent); border-color: var(--accent); }
+.empty { display: flex; align-items: center; gap: 12px; padding: 22px 18px; border: 1px dashed var(--border-strong); border-radius: 10px; color: var(--muted); font-size: 13px; }
+.empty .e-ico { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 10px; background: var(--gold-soft); color: var(--gold-bright); }
+.empty .e-ico svg { width: 17px; height: 17px; }
+.empty strong { color: var(--text-2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>The Armory</h1>
+    <p class="sub">Every item you own, with the search, sorting and rarities the bag never had.</p>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="q" type="text" placeholder="Search your items" autocomplete="off">
+        </div>
+        <div class="slider" id="scope">
+            <span class="ind"></span>
+            <button data-v="all" class="active">All</button>
+            <button data-v="inv">Inventory</button>
+            <button data-v="bank">Bank</button>
+        </div>
+    </div>
+
+    <div class="slider cats" id="cats">
+        <span class="ind"></span>
+        <button data-v="All" class="active">All</button>
+        <button data-v="Weapon">Weapon</button>
+        <button data-v="Class">Class</button>
+        <button data-v="Armor">Armor</button>
+        <button data-v="Helm">Helm</button>
+        <button data-v="Cape">Cape</button>
+        <button data-v="Pet">Pet</button>
+        <button data-v="Ground">Ground</button>
+        <button data-v="Necklace">Necklace</button>
+        <button data-v="Misc">Misc</button>
+        <button data-v="House">House</button>
+    </div>
+
+    <div class="subwrap" id="subwrap">
+        <div class="slider sub-slider" id="subs"><span class="ind"></span></div>
+    </div>
+
+    <div class="statbar">
+        <span class="stat" id="stat"></span>
+        <span class="grow"></span>
+        <span class="order-wrap">
+            <select id="order" title="Order">
+                <option value="game">Game Order</option>
+                <option value="name">Name</option>
+                <option value="tier">Rarity</option>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+            </select>
+        </span>
+        <button class="pillbtn" id="new-chip">New</button>
+        <div class="rarity-wrap" id="rarity-wrap">
+            <button class="pillbtn" id="rarity-chip">Rarity</button>
+            <div class="pop" id="rarity-pop">
+                <div class="pop-head"><span>In this view</span><a id="rarity-clear">Clear</a></div>
+                <div id="rarity-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="list"></div>
+</div>
+<script src="../data/rarities.js"></script>
+<script src="../common.js"></script>
+<script src="../content/hover.js"></script>
+<script src="armory.js"></script>
+</body>
+</html>
