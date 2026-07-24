@@ -64,7 +64,7 @@ tier two ways, both share a row.
 | Secret | tucked away in the game | IoDA |
 | Super Ultra Rare / Super Mega Ultra Rare | permanently unavailable | excluded |
 | Ultra Rare | no longer obtainable | IoDA |
-| Unknown | the true rarity is not determined yet, the editors leave it unset | IoDA |
+| Unknown | the true rarity is not determined yet | IoDA |
 | Upgrade Pack | buying any package above $9.95 lets you pick one upgrade shop | excluded |
 | Verification Shop | tower verification shops (Guardian / Dragonlord / StarLord) | excluded |
 | Weird | permanently available | IoDA |

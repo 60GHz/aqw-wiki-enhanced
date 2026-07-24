@@ -100,8 +100,8 @@ const AQWE = (() => {
     TYPE_GATES["battle pet"] = new Set(["Pet"]);
     TYPE_GATES["gun"] = new Set(["Gun", "HandGun", "Rifle"]);
     TYPE_GATES["weapon"] = new Set(WEAPON_TYPES);
-    // API LAW (Atahan-confirmed): a literal "Misc" type from the inventory
-    // API is ALWAYS a Ground item - the Misc category's real members
+    // API law, verified against a live inventory: a literal "Misc" type from
+    // the API is ALWAYS a Ground item - the Misc category's real members
     // (Note, Resource, Item, Quest Item, Boost, Enhancement) each report
     // their own type string. House pieces report exactly House, Floor
     // Item or Wall Item.

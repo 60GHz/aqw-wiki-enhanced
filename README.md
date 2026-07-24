@@ -9,17 +9,16 @@ rarity filters the game never gave it. Hover an item name anywhere and its
 art appears at your cursor. And the whole wiki finally looks the part,
 pixel perfect on every page, with a proper dark mode forged in Shadowfall.
 
-<!-- STORE BUTTONS: replace # with the real listing URLs once approved -->
 <p align="center">
-  <a href="#"><img src="docs/img/install-chrome.svg" height="58" alt="Get it from the Chrome Web Store"></a>
+  <a href="https://chromewebstore.google.com/detail/aqw-wiki-enhanced/ckcaldfamdaffifbagggkdcmefgkiiop"><img src="docs/img/install-chrome.svg" height="58" alt="Get it from the Chrome Web Store"></a>
   &nbsp;&nbsp;
-  <a href="#"><img src="docs/img/install-firefox.svg" height="58" alt="Get it from Firefox Add-ons"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/aqw-wiki-enhanced/"><img src="docs/img/install-firefox.svg" height="58" alt="Get it from Firefox Add-ons"></a>
 </p>
 <p align="center">Free and open source · GPL-3.0</p>
 
 <p align="center">
-  <img src="docs/img/popup-good.png" width="380" alt="The extension popup, Good mode">
-  <img src="docs/img/popup-evil.png" width="380" alt="The extension popup, Evil mode">
+  <img src="docs/img/popup-good.png" width="382" alt="The extension popup, Good mode">
+  <img src="docs/img/popup-evil.png" width="382" alt="The extension popup, Evil mode">
 </p>
 <p align="center"><em>One popup, two identities. Good keeps the wiki's library light. Evil is Shadowfall. Everything lives here.</em></p>
 
@@ -101,8 +100,8 @@ that speaks the official tag tool's exact grammar: category, order, gender,
 per page, with suggestions at every step.
 
 <p align="center">
-  <img src="docs/img/popup-search-recommendations.png" width="380" alt="Instant search with owned marks">
-  <img src="docs/img/popup-search-by-tag.png" width="380" alt="The Search by Tag builder">
+  <img src="docs/img/popup-search-recommendations.png" width="382" alt="Instant search with owned marks">
+  <img src="docs/img/popup-search-by-tag.png" width="382" alt="The Search by Tag builder">
 </p>
 <p align="center"><em>Left: instant results with Owned marks. Right: the tag builder suggesting tags, categories and filters as you type.</em></p>
 
@@ -126,7 +125,7 @@ policy lives in [docs/PRIVACY.md](docs/PRIVACY.md).
 
 ## Install
 
-### <a href="#"><img src="docs/img/install-chrome.svg" height="58" alt="Get it from the Chrome Web Store"></a>
+### <a href="https://chromewebstore.google.com/detail/aqw-wiki-enhanced/ckcaldfamdaffifbagggkdcmefgkiiop"><img src="docs/img/install-chrome.svg" height="58" alt="Get it from the Chrome Web Store"></a>
 
 For **Chrome, Edge, Brave and Opera GX**. One click from the store, and it
 updates itself.
@@ -137,7 +136,7 @@ open `chrome://extensions`, turn on Developer mode, hit *Load unpacked* and
 pick the unzipped folder. Building from source works too: clone the repo and
 load the `extension/` folder the same way, as-is.
 
-### <a href="#"><img src="docs/img/install-firefox.svg" height="58" alt="Get it from Firefox Add-ons"></a>
+### <a href="https://addons.mozilla.org/firefox/addon/aqw-wiki-enhanced/"><img src="docs/img/install-firefox.svg" height="58" alt="Get it from Firefox Add-ons"></a>
 
 For **Firefox**. The store install is the permanent one and updates itself.
 

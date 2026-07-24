@@ -152,7 +152,7 @@ function loadItems(inv) {
                 }
             }
             // No rarity anywhere AND no page under any candidate name:
-            // mod items, one-of-ones, pages the wiki staff forgot - GOD.
+            // mod items, one-of-ones, pages the wiki staff forgot - God tier.
             if (!r && known && !cands.some((c) => known.has(c.k)) &&
                 (!dataAt || !it.a || +new Date(it.a) <= dataAt)) r = "God";
         }

@@ -6,8 +6,8 @@ const api = globalThis.browser ?? globalThis.chrome;
 
 const INVENTORY_URL = "https://account.aq.com/myapi/inventory/InventoryData";
 const CALENDAR_URL = "https://www.artix.com/calendar/";
-/* EDIT HERE: your Cloudflare Worker URL (docs/telemetry-worker.js). Empty =
-   telemetry is fully dormant: no consent line in the popup, nothing counted
+/* The telemetry endpoint (tools/telemetry-worker.js). Leave empty and
+   telemetry goes fully dormant: no consent line in the popup, nothing counted
    leaves the machine, ever. See docs/TELEMETRY.md. */
 const TELEMETRY_URL = "https://aqwe-telemetry.60ghz.workers.dev/";
 const SYNC_ALARM = "aqwe-sync";
@@ -144,8 +144,8 @@ api.tabs.onRemoved.addListener(async (tabId) => {
 });
 
 /* ---------------- Server boost tracker (Artix calendar).
-   Core boosts: Double XP / Class / Rep / Gold / Everything.
-   Event boosts (e.g. Nulgath drop boosts) ride along as a second, orange card.
+   Core boosts: Double XP / Class / Rep / Gold / All.
+   Event boosts (e.g. Nulgath Resource boost) ride along as a second, orange card.
    Durations per the calendar's convention: weekday boosts 48 h, Friday 72 h. */
 
 function boostEnd(start, rawEnd, kind) {
@@ -310,8 +310,8 @@ api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         return true;
     }
     if (msg && msg.type === "FETCH_WIKI_PAGE") {
-        // One scheme for every caller: CharPage links, Armory rows and the
-        // goal pages all arrive as http://, and Firefox's extension pages
+        // One scheme for every caller: CharPage links, the Armory rows and
+        // the goal pages all arrive as http://, and Firefox's extension pages
         // refuse insecure fetches (its default CSP upgraded them straight
         // into wikidot's https->http redirect and looped forever - see
         // manifest.firefox.json). https also means one cache key per page.
